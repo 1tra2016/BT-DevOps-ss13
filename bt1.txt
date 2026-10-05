@@ -1,0 +1,12 @@
+
+Nếu Prometheus được chạy bằng Docker (Container) còn Backend chạy trực tiếp trên máy chủ thật (Host), thì chữ `localhost` trong file cấu hình sẽ trỏ vào chính container mà Prometheus hiện tại đang đứng. Nhưng vì bên trong container không chứa backend nên Prometheus ném mỗi không tìm thấy -> connection refused 
+
+Sửa lại file `prometheus.yml` để Prometheus có thể "nhìn thấy" Backend:
+scrape_configs:
+  - job_name: 'backend'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['host.docker.internal:8080']
+
+
+Endpoint mặc định mà Prometheus gọi vào là "/metrics". Trong khi Spring Boot với Spring Boot Actuator + Micrometer Prometheus thường expose metrics ở: "/actuator/prometheus". Do đó ta cần phải thêm metrics_path: "/actuator/prometheus" thì Prometheus mới gọi đến đúng nơi Spring Boot gửi trả kết quả
