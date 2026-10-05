@@ -1,0 +1,5 @@
+Node Exporter mặc định chạy ở Port 9100
+
+Không nên public port 9100 trực tiếp ra Internet nếu không có biện pháp bảo vệ phù hợp, vì Node Exporter mặc định không cung cấp cơ chế đăng nhập bằng username/password. Người ngoài có thể truy cập endpoint metrics và xem các thông tin về hệ thống
+
+Trong bài này, có thể không public port 9100. Prometheus và Node Exporter cùng nằm trong Docker network nên Prometheus có thể truy cập:
